@@ -8,6 +8,8 @@ namespace SheshaAPI.Models
         {
         }
 
-        public DbSet<City> City {get;set;}
+        public DbSet<City> City { get; set; }
+
+        public DbSet<Province> Province { get; set; }
     }
 }

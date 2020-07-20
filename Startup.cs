@@ -10,6 +10,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using SheshaAPI.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace SheshaAPI
 {
@@ -25,14 +27,15 @@ namespace SheshaAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // Database connection string.
-            // Make sure to update the Password value below from "Your_password123" to your actual password.
-            var connection = @"Server=127.0.0.1,1433;Database=Shesha;User=sa;Password=Nfs10006490;";
+            //Setting up Environment Variables 
+            var server = Configuration["DBServer"] ?? "localhost";
+            var port = Configuration["DBPort"] ?? "1433";
+            var user = Configuration["DBUser"] ?? "SA";
+            var password = Configuration["DBPassword"] ?? "Nfs10006490";
+            var database = Configuration["Database"] ?? "Shesha";
 
-            // This line uses 'UseSqlServer' in the 'options' parameter
-            // with the connection string defined above.
-            services.AddDbContext<ApplicationDbContext>(
-            options => options.UseSqlServer(connection));
+            services.AddDbContext<SheshaContext>(options => 
+            options.UseSqlServer($"Server={server},{port};Initial Catalog={database};User ID = {user};password={password}"));
 
             services.AddControllers();
         }

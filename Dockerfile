@@ -1,8 +1,17 @@
-FROM microsoft/dotnet:3.1-sdk
-COPY . /app
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build-env
 WORKDIR /app
-RUN ["dotnet", "restore"]
-RUN ["dotnet", "build"]
-EXPOSE 80/tcp
-RUN chmod +x ./entrypoint.sh
-CMD /bin/bash ./entrypoint.sh
+
+#Copy csproj and restore
+COPY *.csproj ./
+RUN dotnet restore
+
+#Copy everything else and build
+COPY . ./
+RUN dotnet publish -c Release -o out
+
+#Generate runtime image
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
+WORKDIR /app
+EXPOSE 80
+COPY --from=build-env /app/out .
+ENTRYPOINT ["dotnet", "SheshaAPI.dll"]

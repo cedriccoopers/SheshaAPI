@@ -10,11 +10,11 @@ namespace SheshaAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class SheshaController : ControllerBase
+    public class CityController : ControllerBase
     {
         private readonly SheshaContext _context;
 
-        public SheshaController(SheshaContext context)
+        public CityController(SheshaContext context)
         {
             _context = context;
         }
@@ -23,6 +23,15 @@ namespace SheshaAPI.Controllers
         public ActionResult<IEnumerable<City>> GetCityItems()
         {
             return _context.City;
+        }
+
+        [HttpGet("Name")]
+        public ActionResult<City> GetCityByName(string name)
+        {
+            IEnumerable<City> allCities = _context.City;
+            return (from p in allCities
+                    where p.Name == name
+                        select p).FirstOrDefault();
         }
     }
 }

@@ -12,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using SheshaAPI.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 
 namespace SheshaAPI
 {
@@ -38,6 +39,18 @@ namespace SheshaAPI
             options.UseSqlServer($"Server={server},{port};Initial Catalog={database};User ID = {user};password={password}"));
 
             services.AddControllers();
+
+            services.AddSwaggerGen();
+
+            services.AddSwaggerGen(c => 
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Version = "V1",
+                    Title = "SheshaAPI",
+                    Description = "SheshaAPI using ASP.NET Core Web API"
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,6 +60,13 @@ namespace SheshaAPI
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "SheshaAPI V1");
+                c.RoutePrefix = string.Empty;
+            });
 
             app.UseHttpsRedirection();
 
@@ -58,6 +78,7 @@ namespace SheshaAPI
             {
                 endpoints.MapControllers();
             });
+            
         }
     }
 }

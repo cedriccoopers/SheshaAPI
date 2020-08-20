@@ -29,7 +29,7 @@ namespace SheshaAPI
         public void ConfigureServices(IServiceCollection services)
         {
             //Setting up Environment Variables 
-            var server = Configuration["DBServer"] ?? "localhost";
+            var server = Configuration["DBServer"] ?? "shesha-api";
             var port = Configuration["DBPort"] ?? "1433";
             var user = Configuration["DBUser"] ?? "SA";
             var password = Configuration["DBPassword"] ?? "Nfs10006490";

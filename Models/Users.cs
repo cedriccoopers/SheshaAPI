@@ -1,9 +1,11 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace SheshaAPI.Models
 {
     public class Users
     {
+        [Key]
         public int UserID { get; set; }
         public string UserEmail { get; set; }
         public string UserPassword { get; set; }

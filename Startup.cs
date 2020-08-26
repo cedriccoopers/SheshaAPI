@@ -29,20 +29,20 @@ namespace SheshaAPI
         public void ConfigureServices(IServiceCollection services)
         {
             //Setting up Environment Variables 
-            var server = Configuration["DBServer"] ?? "shesha-api";
+            var server = Configuration["DBServer"] ?? "localhost";
             var port = Configuration["DBPort"] ?? "1433";
             var user = Configuration["DBUser"] ?? "SA";
             var password = Configuration["DBPassword"] ?? "Nfs10006490";
             var database = Configuration["Database"] ?? "Shesha";
 
-            services.AddDbContext<SheshaContext>(options => 
+            services.AddDbContext<SheshaContext>(options =>
             options.UseSqlServer($"Server={server},{port};Initial Catalog={database};User ID = {user};password={password}"));
 
             services.AddControllers();
 
             services.AddSwaggerGen();
 
-            services.AddSwaggerGen(c => 
+            services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
@@ -78,7 +78,7 @@ namespace SheshaAPI
             {
                 endpoints.MapControllers();
             });
-            
+
         }
     }
 }
